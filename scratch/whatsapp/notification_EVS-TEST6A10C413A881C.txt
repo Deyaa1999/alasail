@@ -1,0 +1,14 @@
+🔔 *New Order Placed!* 🔔
+------------------------------------
+📋 *Order Number:* EVS-TEST6A10C413A881C
+💰 *Total Amount:* 2,500.00 BDT
+💳 *Payment Method:* COD
+📅 *Date:* 2026-05-23 00:01:07
+------------------------------------
+📍 *Shipping Details:*
+John Doe, 123 Amman St, Jordan — Phone: +962790000000
+📝 *Notes:* Deliver after 5 PM please.
+------------------------------------
+📦 *Ordered Items:*
+• x فيتامين (1,500.00 BDT)
+• x Phenylbutazone Paste (500.00 BDT)

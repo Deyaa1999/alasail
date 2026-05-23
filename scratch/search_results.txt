@@ -1,0 +1,1831 @@
+Found 131 matches for 'subcat':
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 3)
+Match: * Admin: Category & Subcategory Management
+----------------------------------------
+Context:
+<?php
+/**
+ * Admin: Category & Subcategory Management
+ * Full CRUD for categories and subcategories
+ */
+$pageTitle = 'Categories — Admin';
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 4)
+Match: * Full CRUD for categories and subcategories
+----------------------------------------
+Context:
+<?php
+/**
+ * Admin: Category & Subcategory Management
+ * Full CRUD for categories and subcategories
+ */
+$pageTitle = 'Categories — Admin';
+require_once __DIR__ . '/layout.php';
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 11)
+Match: $type   = $_GET['type']   ?? 'category'; // 'category' or 'subcategory'
+----------------------------------------
+Context:
+
+$msg = '';
+$action = $_GET['action'] ?? '';
+$type   = $_GET['type']   ?? 'category'; // 'category' or 'subcategory'
+
+/* ── DELETE ── */
+if ($action === 'delete') {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 15)
+Match: if ($type === 'subcategory' && isset($_GET['id'])) {
+----------------------------------------
+Context:
+
+/* ── DELETE ── */
+if ($action === 'delete') {
+    if ($type === 'subcategory' && isset($_GET['id'])) {
+        $id = (int)$_GET['id'];
+        $conn->query("DELETE FROM subcategories WHERE id=$id");
+        header('Location: /GadgetZone/admin/categories.php?msg=subcat_deleted'); exit;
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 17)
+Match: $conn->query("DELETE FROM subcategories WHERE id=$id");
+----------------------------------------
+Context:
+if ($action === 'delete') {
+    if ($type === 'subcategory' && isset($_GET['id'])) {
+        $id = (int)$_GET['id'];
+        $conn->query("DELETE FROM subcategories WHERE id=$id");
+        header('Location: /GadgetZone/admin/categories.php?msg=subcat_deleted'); exit;
+    } elseif ($type === 'category' && isset($_GET['id'])) {
+        $id = (int)$_GET['id'];
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 18)
+Match: header('Location: /GadgetZone/admin/categories.php?msg=subcat_deleted'); exit;
+----------------------------------------
+Context:
+    if ($type === 'subcategory' && isset($_GET['id'])) {
+        $id = (int)$_GET['id'];
+        $conn->query("DELETE FROM subcategories WHERE id=$id");
+        header('Location: /GadgetZone/admin/categories.php?msg=subcat_deleted'); exit;
+    } elseif ($type === 'category' && isset($_GET['id'])) {
+        $id = (int)$_GET['id'];
+        $conn->query("DELETE FROM categories WHERE id=$id");
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 42)
+Match: /* ── SAVE SUBCATEGORY ── */
+----------------------------------------
+Context:
+    header('Location: /GadgetZone/admin/categories.php?msg=cat_saved'); exit;
+}
+
+/* ── SAVE SUBCATEGORY ── */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'subcategory') {
+    $sid   = (int)($_POST['id'] ?? 0);
+    $catId = (int)$_POST['category_id'];
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 43)
+Match: if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'subcategory') {
+----------------------------------------
+Context:
+}
+
+/* ── SAVE SUBCATEGORY ── */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'subcategory') {
+    $sid   = (int)($_POST['id'] ?? 0);
+    $catId = (int)$_POST['category_id'];
+    $name  = $conn->real_escape_string(trim($_POST['name']));
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 52)
+Match: $conn->query("UPDATE subcategories SET category_id=$catId,name='$name',slug='$slug',icon='$icon',order_num=$order WHERE id=$sid");
+----------------------------------------
+Context:
+    $order = (int)($_POST['order_num'] ?? 0);
+
+    if ($sid) {
+        $conn->query("UPDATE subcategories SET category_id=$catId,name='$name',slug='$slug',icon='$icon',order_num=$order WHERE id=$sid");
+    } else {
+        $conn->query("INSERT INTO subcategories (category_id,name,slug,icon,order_num) VALUES ($catId,'$name','$slug','$icon',$order)");
+    }
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 54)
+Match: $conn->query("INSERT INTO subcategories (category_id,name,slug,icon,order_num) VALUES ($catId,'$name','$slug','$icon',$order)");
+----------------------------------------
+Context:
+    if ($sid) {
+        $conn->query("UPDATE subcategories SET category_id=$catId,name='$name',slug='$slug',icon='$icon',order_num=$order WHERE id=$sid");
+    } else {
+        $conn->query("INSERT INTO subcategories (category_id,name,slug,icon,order_num) VALUES ($catId,'$name','$slug','$icon',$order)");
+    }
+    header('Location: /GadgetZone/admin/categories.php?msg=subcat_saved'); exit;
+}
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 56)
+Match: header('Location: /GadgetZone/admin/categories.php?msg=subcat_saved'); exit;
+----------------------------------------
+Context:
+    } else {
+        $conn->query("INSERT INTO subcategories (category_id,name,slug,icon,order_num) VALUES ($catId,'$name','$slug','$icon',$order)");
+    }
+    header('Location: /GadgetZone/admin/categories.php?msg=subcat_saved'); exit;
+}
+
+/* ── Fetch data ── */
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 68)
+Match: $subcategories = $conn->query("
+----------------------------------------
+Context:
+    ORDER BY c.order_num ASC, c.id ASC
+");
+
+$subcategories = $conn->query("
+    SELECT s.*, c.name AS cat_name, COUNT(p.id) AS product_count
+    FROM subcategories s
+    JOIN categories c ON c.id=s.category_id
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 70)
+Match: FROM subcategories s
+----------------------------------------
+Context:
+
+$subcategories = $conn->query("
+    SELECT s.*, c.name AS cat_name, COUNT(p.id) AS product_count
+    FROM subcategories s
+    JOIN categories c ON c.id=s.category_id
+    LEFT JOIN products p ON p.subcategory_id=s.id
+    GROUP BY s.id
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 72)
+Match: LEFT JOIN products p ON p.subcategory_id=s.id
+----------------------------------------
+Context:
+    SELECT s.*, c.name AS cat_name, COUNT(p.id) AS product_count
+    FROM subcategories s
+    JOIN categories c ON c.id=s.category_id
+    LEFT JOIN products p ON p.subcategory_id=s.id
+    GROUP BY s.id
+    ORDER BY c.order_num ASC, s.order_num ASC
+");
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 83)
+Match: <div class="admin-subtitle">Manage categories and subcategories</div>
+----------------------------------------
+Context:
+<div class="admin-header">
+    <div>
+        <div class="admin-title">Categories</div>
+        <div class="admin-subtitle">Manage categories and subcategories</div>
+    </div>
+    <div style="display:flex;gap:10px;">
+        <button class="btn-admin btn-admin-primary" onclick="openModal('catModal')">+ Add Category</button>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 87)
+Match: <button class="btn-admin btn-admin-primary" style="background:#B8860B" onclick="openModal('subcatModal')">+ Add Subcategory</button>
+----------------------------------------
+Context:
+    </div>
+    <div style="display:flex;gap:10px;">
+        <button class="btn-admin btn-admin-primary" onclick="openModal('catModal')">+ Add Category</button>
+        <button class="btn-admin btn-admin-primary" style="background:#B8860B" onclick="openModal('subcatModal')">+ Add Subcategory</button>
+    </div>
+</div>
+
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 96)
+Match: 'subcat_saved'  => '✅ Subcategory saved successfully.',
+----------------------------------------
+Context:
+    <?= match($_GET['msg']) {
+        'cat_saved'     => '✅ Category saved successfully.',
+        'cat_deleted'   => '🗑️ Category deleted.',
+        'subcat_saved'  => '✅ Subcategory saved successfully.',
+        'subcat_deleted'=> '🗑️ Subcategory deleted.',
+        default         => '✅ Done.'
+    } ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 97)
+Match: 'subcat_deleted'=> '🗑️ Subcategory deleted.',
+----------------------------------------
+Context:
+        'cat_saved'     => '✅ Category saved successfully.',
+        'cat_deleted'   => '🗑️ Category deleted.',
+        'subcat_saved'  => '✅ Subcategory saved successfully.',
+        'subcat_deleted'=> '🗑️ Subcategory deleted.',
+        default         => '✅ Done.'
+    } ?>
+</div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 126)
+Match: onclick="return confirm('Delete category \'<?= htmlspecialchars($c['name']) ?>\'? This will also delete all its subcategories.')">Delete</a>
+----------------------------------------
+Context:
+                    onclick="openEditCat(<?= htmlspecialchars(json_encode($c)) ?>)">Edit</button>
+                <a href="?action=delete&type=category&id=<?= $c['id'] ?>"
+                   class="btn-admin btn-admin-sm btn-admin-delete"
+                   onclick="return confirm('Delete category \'<?= htmlspecialchars($c['name']) ?>\'? This will also delete all its subcategories.')">Delete</a>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 134)
+Match: <!-- ── SUBCATEGORIES TABLE ── -->
+----------------------------------------
+Context:
+    </table>
+</div>
+
+<!-- ── SUBCATEGORIES TABLE ── -->
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div class="admin-card-title">📁 Subcategories</div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 137)
+Match: <div class="admin-card-title">📁 Subcategories</div>
+----------------------------------------
+Context:
+<!-- ── SUBCATEGORIES TABLE ── -->
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div class="admin-card-title">📁 Subcategories</div>
+    </div>
+    <table class="data-table">
+        <thead>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 144)
+Match: <?php while ($s = $subcategories->fetch_assoc()): ?>
+----------------------------------------
+Context:
+            <tr><th>Icon</th><th>Name</th><th>Parent Category</th><th>Order</th><th>Products</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        <?php while ($s = $subcategories->fetch_assoc()): ?>
+        <tr>
+            <td style="font-size:20px"><?= htmlspecialchars($s['icon']) ?></td>
+            <td><span style="font-weight:600"><?= htmlspecialchars($s['name']) ?></span></td>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 153)
+Match: onclick="openEditSubcat(<?= htmlspecialchars(json_encode($s)) ?>)">Edit</button>
+----------------------------------------
+Context:
+            <td><?= $s['product_count'] ?></td>
+            <td class="actions-bar">
+                <button class="btn-admin btn-admin-sm btn-admin-edit"
+                    onclick="openEditSubcat(<?= htmlspecialchars(json_encode($s)) ?>)">Edit</button>
+                <a href="?action=delete&type=subcategory&id=<?= $s['id'] ?>"
+                   class="btn-admin btn-admin-sm btn-admin-delete"
+                   onclick="return confirm('Delete subcategory \'<?= htmlspecialchars($s['name']) ?>\'?')">Delete</a>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 154)
+Match: <a href="?action=delete&type=subcategory&id=<?= $s['id'] ?>"
+----------------------------------------
+Context:
+            <td class="actions-bar">
+                <button class="btn-admin btn-admin-sm btn-admin-edit"
+                    onclick="openEditSubcat(<?= htmlspecialchars(json_encode($s)) ?>)">Edit</button>
+                <a href="?action=delete&type=subcategory&id=<?= $s['id'] ?>"
+                   class="btn-admin btn-admin-sm btn-admin-delete"
+                   onclick="return confirm('Delete subcategory \'<?= htmlspecialchars($s['name']) ?>\'?')">Delete</a>
+            </td>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 156)
+Match: onclick="return confirm('Delete subcategory \'<?= htmlspecialchars($s['name']) ?>\'?')">Delete</a>
+----------------------------------------
+Context:
+                    onclick="openEditSubcat(<?= htmlspecialchars(json_encode($s)) ?>)">Edit</button>
+                <a href="?action=delete&type=subcategory&id=<?= $s['id'] ?>"
+                   class="btn-admin btn-admin-sm btn-admin-delete"
+                   onclick="return confirm('Delete subcategory \'<?= htmlspecialchars($s['name']) ?>\'?')">Delete</a>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 195)
+Match: <!-- ── SUBCATEGORY MODAL ── -->
+----------------------------------------
+Context:
+    </div>
+</div>
+
+<!-- ── SUBCATEGORY MODAL ── -->
+<div class="modal-overlay" id="subcatModal">
+    <div class="modal">
+        <button class="modal-close">×</button>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 196)
+Match: <div class="modal-overlay" id="subcatModal">
+----------------------------------------
+Context:
+</div>
+
+<!-- ── SUBCATEGORY MODAL ── -->
+<div class="modal-overlay" id="subcatModal">
+    <div class="modal">
+        <button class="modal-close">×</button>
+        <div class="modal-title" id="subcatModalTitle">Add Subcategory</div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 199)
+Match: <div class="modal-title" id="subcatModalTitle">Add Subcategory</div>
+----------------------------------------
+Context:
+<div class="modal-overlay" id="subcatModal">
+    <div class="modal">
+        <button class="modal-close">×</button>
+        <div class="modal-title" id="subcatModalTitle">Add Subcategory</div>
+        <form method="POST">
+            <input type="hidden" name="form_type" value="subcategory">
+            <input type="hidden" name="id" id="subcat_id" value="0">
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 201)
+Match: <input type="hidden" name="form_type" value="subcategory">
+----------------------------------------
+Context:
+        <button class="modal-close">×</button>
+        <div class="modal-title" id="subcatModalTitle">Add Subcategory</div>
+        <form method="POST">
+            <input type="hidden" name="form_type" value="subcategory">
+            <input type="hidden" name="id" id="subcat_id" value="0">
+            <div class="form-grid-2">
+                <div class="form-group" style="grid-column:span 2">
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 202)
+Match: <input type="hidden" name="id" id="subcat_id" value="0">
+----------------------------------------
+Context:
+        <div class="modal-title" id="subcatModalTitle">Add Subcategory</div>
+        <form method="POST">
+            <input type="hidden" name="form_type" value="subcategory">
+            <input type="hidden" name="id" id="subcat_id" value="0">
+            <div class="form-grid-2">
+                <div class="form-group" style="grid-column:span 2">
+                    <label class="form-label">Subcategory Name *</label>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 205)
+Match: <label class="form-label">Subcategory Name *</label>
+----------------------------------------
+Context:
+            <input type="hidden" name="id" id="subcat_id" value="0">
+            <div class="form-grid-2">
+                <div class="form-group" style="grid-column:span 2">
+                    <label class="form-label">Subcategory Name *</label>
+                    <input type="text" name="name" id="subcat_name" class="form-input" required>
+                </div>
+                <div class="form-group">
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 206)
+Match: <input type="text" name="name" id="subcat_name" class="form-input" required>
+----------------------------------------
+Context:
+            <div class="form-grid-2">
+                <div class="form-group" style="grid-column:span 2">
+                    <label class="form-label">Subcategory Name *</label>
+                    <input type="text" name="name" id="subcat_name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Parent Category *</label>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 210)
+Match: <select name="category_id" id="subcat_catid" class="form-select" required>
+----------------------------------------
+Context:
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Parent Category *</label>
+                    <select name="category_id" id="subcat_catid" class="form-select" required>
+                        <?php $allCatsForSelect->data_seek(0); while ($c = $allCatsForSelect->fetch_assoc()): ?>
+                        <option value="<?= $c['id'] ?>"><?= htmlspecialchars($c['name']) ?></option>
+                        <?php endwhile; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 218)
+Match: <input type="text" name="slug" id="subcat_slug" class="form-input" placeholder="leave blank to auto-generate">
+----------------------------------------
+Context:
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Slug (auto-generated)</label>
+                    <input type="text" name="slug" id="subcat_slug" class="form-input" placeholder="leave blank to auto-generate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Icon (emoji)</label>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 222)
+Match: <input type="text" name="icon" id="subcat_icon" class="form-input" value="🐴" maxlength="10">
+----------------------------------------
+Context:
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Icon (emoji)</label>
+                    <input type="text" name="icon" id="subcat_icon" class="form-input" value="🐴" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Order Number</label>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 226)
+Match: <input type="number" name="order_num" id="subcat_order" class="form-input" value="0">
+----------------------------------------
+Context:
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Order Number</label>
+                    <input type="number" name="order_num" id="subcat_order" class="form-input" value="0">
+                </div>
+            </div>
+            <button type="submit" class="btn-admin btn-admin-primary" style="width:100%;justify-content:center;padding:12px;margin-top:8px;background:#B8860B">Save Subcategory</button>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 229)
+Match: <button type="submit" class="btn-admin btn-admin-primary" style="width:100%;justify-content:center;padding:12px;margin-top:8px;background:#B8860B">Save Subcategory</button>
+----------------------------------------
+Context:
+                    <input type="number" name="order_num" id="subcat_order" class="form-input" value="0">
+                </div>
+            </div>
+            <button type="submit" class="btn-admin btn-admin-primary" style="width:100%;justify-content:center;padding:12px;margin-top:8px;background:#B8860B">Save Subcategory</button>
+        </form>
+    </div>
+</div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 244)
+Match: function openEditSubcat(s) {
+----------------------------------------
+Context:
+    document.getElementById('cat_order').value = cat.order_num || 0;
+    openModal('catModal');
+}
+function openEditSubcat(s) {
+    document.getElementById('subcatModalTitle').textContent = s.id ? 'Edit Subcategory' : 'Add Subcategory';
+    document.getElementById('subcat_id').value     = s.id || 0;
+    document.getElementById('subcat_name').value   = s.name || '';
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 245)
+Match: document.getElementById('subcatModalTitle').textContent = s.id ? 'Edit Subcategory' : 'Add Subcategory';
+----------------------------------------
+Context:
+    openModal('catModal');
+}
+function openEditSubcat(s) {
+    document.getElementById('subcatModalTitle').textContent = s.id ? 'Edit Subcategory' : 'Add Subcategory';
+    document.getElementById('subcat_id').value     = s.id || 0;
+    document.getElementById('subcat_name').value   = s.name || '';
+    document.getElementById('subcat_slug').value   = s.slug || '';
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 246)
+Match: document.getElementById('subcat_id').value     = s.id || 0;
+----------------------------------------
+Context:
+}
+function openEditSubcat(s) {
+    document.getElementById('subcatModalTitle').textContent = s.id ? 'Edit Subcategory' : 'Add Subcategory';
+    document.getElementById('subcat_id').value     = s.id || 0;
+    document.getElementById('subcat_name').value   = s.name || '';
+    document.getElementById('subcat_slug').value   = s.slug || '';
+    document.getElementById('subcat_icon').value   = s.icon || '🐴';
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 247)
+Match: document.getElementById('subcat_name').value   = s.name || '';
+----------------------------------------
+Context:
+function openEditSubcat(s) {
+    document.getElementById('subcatModalTitle').textContent = s.id ? 'Edit Subcategory' : 'Add Subcategory';
+    document.getElementById('subcat_id').value     = s.id || 0;
+    document.getElementById('subcat_name').value   = s.name || '';
+    document.getElementById('subcat_slug').value   = s.slug || '';
+    document.getElementById('subcat_icon').value   = s.icon || '🐴';
+    document.getElementById('subcat_order').value  = s.order_num || 0;
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 248)
+Match: document.getElementById('subcat_slug').value   = s.slug || '';
+----------------------------------------
+Context:
+    document.getElementById('subcatModalTitle').textContent = s.id ? 'Edit Subcategory' : 'Add Subcategory';
+    document.getElementById('subcat_id').value     = s.id || 0;
+    document.getElementById('subcat_name').value   = s.name || '';
+    document.getElementById('subcat_slug').value   = s.slug || '';
+    document.getElementById('subcat_icon').value   = s.icon || '🐴';
+    document.getElementById('subcat_order').value  = s.order_num || 0;
+    document.getElementById('subcat_catid').value  = s.category_id || '';
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 249)
+Match: document.getElementById('subcat_icon').value   = s.icon || '🐴';
+----------------------------------------
+Context:
+    document.getElementById('subcat_id').value     = s.id || 0;
+    document.getElementById('subcat_name').value   = s.name || '';
+    document.getElementById('subcat_slug').value   = s.slug || '';
+    document.getElementById('subcat_icon').value   = s.icon || '🐴';
+    document.getElementById('subcat_order').value  = s.order_num || 0;
+    document.getElementById('subcat_catid').value  = s.category_id || '';
+    openModal('subcatModal');
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 250)
+Match: document.getElementById('subcat_order').value  = s.order_num || 0;
+----------------------------------------
+Context:
+    document.getElementById('subcat_name').value   = s.name || '';
+    document.getElementById('subcat_slug').value   = s.slug || '';
+    document.getElementById('subcat_icon').value   = s.icon || '🐴';
+    document.getElementById('subcat_order').value  = s.order_num || 0;
+    document.getElementById('subcat_catid').value  = s.category_id || '';
+    openModal('subcatModal');
+}
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 251)
+Match: document.getElementById('subcat_catid').value  = s.category_id || '';
+----------------------------------------
+Context:
+    document.getElementById('subcat_slug').value   = s.slug || '';
+    document.getElementById('subcat_icon').value   = s.icon || '🐴';
+    document.getElementById('subcat_order').value  = s.order_num || 0;
+    document.getElementById('subcat_catid').value  = s.category_id || '';
+    openModal('subcatModal');
+}
+document.querySelector('[onclick="openModal(\'catModal\')"]')?.addEventListener('click', () => openEditCat({}));
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 252)
+Match: openModal('subcatModal');
+----------------------------------------
+Context:
+    document.getElementById('subcat_icon').value   = s.icon || '🐴';
+    document.getElementById('subcat_order').value  = s.order_num || 0;
+    document.getElementById('subcat_catid').value  = s.category_id || '';
+    openModal('subcatModal');
+}
+document.querySelector('[onclick="openModal(\'catModal\')"]')?.addEventListener('click', () => openEditCat({}));
+document.querySelector('[onclick="openModal(\'subcatModal\')"]')?.addEventListener('click', () => openEditSubcat({}));
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\categories.php (Line 255)
+Match: document.querySelector('[onclick="openModal(\'subcatModal\')"]')?.addEventListener('click', () => openEditSubcat({}));
+----------------------------------------
+Context:
+    openModal('subcatModal');
+}
+document.querySelector('[onclick="openModal(\'catModal\')"]')?.addEventListener('click', () => openEditCat({}));
+document.querySelector('[onclick="openModal(\'subcatModal\')"]')?.addEventListener('click', () => openEditSubcat({}));
+</script>
+
+<?php require_once __DIR__ . '/footer.php'; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\get_subcategories.php (Line 3)
+Match: * Admin: Get subcategories by category ID — AJAX endpoint
+----------------------------------------
+Context:
+<?php
+/**
+ * Admin: Get subcategories by category ID — AJAX endpoint
+ */
+require_once __DIR__ . '/../includes/functions.php';
+header('Content-Type: application/json');
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\get_subcategories.php (Line 16)
+Match: $subs = getSubcategories($catId);
+----------------------------------------
+Context:
+$catId = (int)($_GET['cat_id'] ?? 0);
+if (!$catId) { echo json_encode([]); exit; }
+
+$subs = getSubcategories($catId);
+echo json_encode($subs);
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 19)
+Match: $subcatId = $_POST['subcategory_id'] ? (int)$_POST['subcategory_id'] : 'NULL';
+----------------------------------------
+Context:
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $pid      = (int)($_POST['id'] ?? 0);
+    $catId    = (int)$_POST['category_id'];
+    $subcatId = $_POST['subcategory_id'] ? (int)$_POST['subcategory_id'] : 'NULL';
+    $name     = $conn->real_escape_string(trim($_POST['name']));
+    $slug     = $conn->real_escape_string(strtolower(preg_replace('/[^a-z0-9]+/i','-',trim($_POST['slug'] ?: $_POST['name']))));
+    $desc     = $conn->real_escape_string(trim($_POST['description']));
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 30)
+Match: $subcatSql = is_numeric($subcatId) ? $subcatId : 'NULL';
+----------------------------------------
+Context:
+    $stock    = (int)$_POST['stock'];
+    $feat     = isset($_POST['featured']) ? 1 : 0;
+    $lto      = isset($_POST['limited_time_offer']) ? 1 : 0;
+    $subcatSql = is_numeric($subcatId) ? $subcatId : 'NULL';
+
+    if ($pid) {
+        $conn->query("UPDATE products SET category_id=$catId,subcategory_id=$subcatSql,name='$name',slug='$slug',description='$desc',price=$price,old_price=".($old==='NULL'?'NULL':"'$old'").",image_url='$img',badge='$badge',stock=$stock,featured=$feat,limited_time_offer=$lto WHERE id=$pid");
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 33)
+Match: $conn->query("UPDATE products SET category_id=$catId,subcategory_id=$subcatSql,name='$name',slug='$slug',description='$desc',price=$price,old_price=".($old==='NULL'?'NULL':"'$old'").",image_url='$img',badge='$badge',stock=$stock,featured=$feat,limited_time_offer=$lto WHERE id=$pid");
+----------------------------------------
+Context:
+    $subcatSql = is_numeric($subcatId) ? $subcatId : 'NULL';
+
+    if ($pid) {
+        $conn->query("UPDATE products SET category_id=$catId,subcategory_id=$subcatSql,name='$name',slug='$slug',description='$desc',price=$price,old_price=".($old==='NULL'?'NULL':"'$old'").",image_url='$img',badge='$badge',stock=$stock,featured=$feat,limited_time_offer=$lto WHERE id=$pid");
+    } else {
+        $conn->query("INSERT INTO products (category_id,subcategory_id,name,slug,description,price,old_price,image_url,badge,stock,featured,limited_time_offer) VALUES ($catId,$subcatSql,'$name','$slug','$desc',$price,".($old==='NULL'?'NULL':"'$old'").",'$img','$badge',$stock,$feat,$lto)");
+    }
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 35)
+Match: $conn->query("INSERT INTO products (category_id,subcategory_id,name,slug,description,price,old_price,image_url,badge,stock,featured,limited_time_offer) VALUES ($catId,$subcatSql,'$name','$slug','$desc',$price,".($old==='NULL'?'NULL':"'$old'").",'$img','$badge',$stock,$feat,$lto)");
+----------------------------------------
+Context:
+    if ($pid) {
+        $conn->query("UPDATE products SET category_id=$catId,subcategory_id=$subcatSql,name='$name',slug='$slug',description='$desc',price=$price,old_price=".($old==='NULL'?'NULL':"'$old'").",image_url='$img',badge='$badge',stock=$stock,featured=$feat,limited_time_offer=$lto WHERE id=$pid");
+    } else {
+        $conn->query("INSERT INTO products (category_id,subcategory_id,name,slug,description,price,old_price,image_url,badge,stock,featured,limited_time_offer) VALUES ($catId,$subcatSql,'$name','$slug','$desc',$price,".($old==='NULL'?'NULL':"'$old'").",'$img','$badge',$stock,$feat,$lto)");
+    }
+    header('Location: /GadgetZone/admin/products.php?msg=saved'); exit;
+}
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 127)
+Match: <label class="form-label">Subcategory (optional)</label>
+----------------------------------------
+Context:
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subcategory (optional)</label>
+                    <select name="subcategory_id" id="modal_subcat" class="form-select">
+                        <option value="">— None —</option>
+                    </select>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 128)
+Match: <select name="subcategory_id" id="modal_subcat" class="form-select">
+----------------------------------------
+Context:
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subcategory (optional)</label>
+                    <select name="subcategory_id" id="modal_subcat" class="form-select">
+                        <option value="">— None —</option>
+                    </select>
+                </div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 301)
+Match: const subcatId = product.subcategory_id || '';
+----------------------------------------
+Context:
+    }
+
+    const catId    = product.category_id;
+    const subcatId = product.subcategory_id || '';
+    const subcatSel = document.getElementById('modal_subcat');
+    subcatSel.innerHTML = '<option value="">— None —</option>';
+    if (catId) {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 302)
+Match: const subcatSel = document.getElementById('modal_subcat');
+----------------------------------------
+Context:
+
+    const catId    = product.category_id;
+    const subcatId = product.subcategory_id || '';
+    const subcatSel = document.getElementById('modal_subcat');
+    subcatSel.innerHTML = '<option value="">— None —</option>';
+    if (catId) {
+        fetch('/GadgetZone/admin/get_subcategories.php?cat_id=' + catId)
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 303)
+Match: subcatSel.innerHTML = '<option value="">— None —</option>';
+----------------------------------------
+Context:
+    const catId    = product.category_id;
+    const subcatId = product.subcategory_id || '';
+    const subcatSel = document.getElementById('modal_subcat');
+    subcatSel.innerHTML = '<option value="">— None —</option>';
+    if (catId) {
+        fetch('/GadgetZone/admin/get_subcategories.php?cat_id=' + catId)
+            .then(r => r.json())
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 305)
+Match: fetch('/GadgetZone/admin/get_subcategories.php?cat_id=' + catId)
+----------------------------------------
+Context:
+    const subcatSel = document.getElementById('modal_subcat');
+    subcatSel.innerHTML = '<option value="">— None —</option>';
+    if (catId) {
+        fetch('/GadgetZone/admin/get_subcategories.php?cat_id=' + catId)
+            .then(r => r.json())
+            .then(data => {
+                data.forEach(s => {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 311)
+Match: if (s.id == subcatId) o.selected = true;
+----------------------------------------
+Context:
+                data.forEach(s => {
+                    const o = document.createElement('option');
+                    o.value = s.id; o.textContent = s.name;
+                    if (s.id == subcatId) o.selected = true;
+                    subcatSel.appendChild(o);
+                });
+            });
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\products.php (Line 312)
+Match: subcatSel.appendChild(o);
+----------------------------------------
+Context:
+                    const o = document.createElement('option');
+                    o.value = s.id; o.textContent = s.name;
+                    if (s.id == subcatId) o.selected = true;
+                    subcatSel.appendChild(o);
+                });
+            });
+    }
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 26)
+Match: // ── 2. Create subcategories table ───────────────────────────────────
+----------------------------------------
+Context:
+    run($conn, "ALTER TABLE categories ADD COLUMN order_num INT DEFAULT 0 AFTER icon", "Added order_num to categories", $log, $errors);
+} else { $log[] = "⏭️ order_num already exists on categories"; }
+
+// ── 2. Create subcategories table ───────────────────────────────────
+run($conn, "
+CREATE TABLE IF NOT EXISTS subcategories (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 28)
+Match: CREATE TABLE IF NOT EXISTS subcategories (
+----------------------------------------
+Context:
+
+// ── 2. Create subcategories table ───────────────────────────────────
+run($conn, "
+CREATE TABLE IF NOT EXISTS subcategories (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT NOT NULL,
+    name        VARCHAR(100) NOT NULL,
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 38)
+Match: ", "Created subcategories table", $log, $errors);
+----------------------------------------
+Context:
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+)
+", "Created subcategories table", $log, $errors);
+
+// ── 3. Add subcategory_id to products (if not exists) ───────────────
+$col2 = $conn->query("SHOW COLUMNS FROM products LIKE 'subcategory_id'");
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 40)
+Match: // ── 3. Add subcategory_id to products (if not exists) ───────────────
+----------------------------------------
+Context:
+)
+", "Created subcategories table", $log, $errors);
+
+// ── 3. Add subcategory_id to products (if not exists) ───────────────
+$col2 = $conn->query("SHOW COLUMNS FROM products LIKE 'subcategory_id'");
+if ($col2->num_rows === 0) {
+    run($conn, "ALTER TABLE products ADD COLUMN subcategory_id INT NULL AFTER category_id", "Added subcategory_id to products", $log, $errors);
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 41)
+Match: $col2 = $conn->query("SHOW COLUMNS FROM products LIKE 'subcategory_id'");
+----------------------------------------
+Context:
+", "Created subcategories table", $log, $errors);
+
+// ── 3. Add subcategory_id to products (if not exists) ───────────────
+$col2 = $conn->query("SHOW COLUMNS FROM products LIKE 'subcategory_id'");
+if ($col2->num_rows === 0) {
+    run($conn, "ALTER TABLE products ADD COLUMN subcategory_id INT NULL AFTER category_id", "Added subcategory_id to products", $log, $errors);
+    run($conn, "ALTER TABLE products ADD CONSTRAINT fk_subcat FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) ON DELETE SET NULL", "Added FK subcategory_id → subcategories", $log, $errors);
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 43)
+Match: run($conn, "ALTER TABLE products ADD COLUMN subcategory_id INT NULL AFTER category_id", "Added subcategory_id to products", $log, $errors);
+----------------------------------------
+Context:
+// ── 3. Add subcategory_id to products (if not exists) ───────────────
+$col2 = $conn->query("SHOW COLUMNS FROM products LIKE 'subcategory_id'");
+if ($col2->num_rows === 0) {
+    run($conn, "ALTER TABLE products ADD COLUMN subcategory_id INT NULL AFTER category_id", "Added subcategory_id to products", $log, $errors);
+    run($conn, "ALTER TABLE products ADD CONSTRAINT fk_subcat FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) ON DELETE SET NULL", "Added FK subcategory_id → subcategories", $log, $errors);
+} else { $log[] = "⏭️ subcategory_id already exists on products"; }
+
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 44)
+Match: run($conn, "ALTER TABLE products ADD CONSTRAINT fk_subcat FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) ON DELETE SET NULL", "Added FK subcategory_id → subcategories", $log, $errors);
+----------------------------------------
+Context:
+$col2 = $conn->query("SHOW COLUMNS FROM products LIKE 'subcategory_id'");
+if ($col2->num_rows === 0) {
+    run($conn, "ALTER TABLE products ADD COLUMN subcategory_id INT NULL AFTER category_id", "Added subcategory_id to products", $log, $errors);
+    run($conn, "ALTER TABLE products ADD CONSTRAINT fk_subcat FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) ON DELETE SET NULL", "Added FK subcategory_id → subcategories", $log, $errors);
+} else { $log[] = "⏭️ subcategory_id already exists on products"; }
+
+// ── 4. Add limited_time_offer to products (if not exists) ───────────
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 45)
+Match: } else { $log[] = "⏭️ subcategory_id already exists on products"; }
+----------------------------------------
+Context:
+if ($col2->num_rows === 0) {
+    run($conn, "ALTER TABLE products ADD COLUMN subcategory_id INT NULL AFTER category_id", "Added subcategory_id to products", $log, $errors);
+    run($conn, "ALTER TABLE products ADD CONSTRAINT fk_subcat FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) ON DELETE SET NULL", "Added FK subcategory_id → subcategories", $log, $errors);
+} else { $log[] = "⏭️ subcategory_id already exists on products"; }
+
+// ── 4. Add limited_time_offer to products (if not exists) ───────────
+$col3 = $conn->query("SHOW COLUMNS FROM products LIKE 'limited_time_offer'");
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 59)
+Match: run($conn, "DELETE FROM subcategories", "Cleared subcategories", $log, $errors);
+----------------------------------------
+Context:
+
+// ── 6. Clear old electronics categories & products ──────────────────
+run($conn, "SET FOREIGN_KEY_CHECKS=0", "Disabled FK checks", $log, $errors);
+run($conn, "DELETE FROM subcategories", "Cleared subcategories", $log, $errors);
+run($conn, "DELETE FROM products", "Cleared old products", $log, $errors);
+run($conn, "DELETE FROM categories", "Cleared old categories", $log, $errors);
+run($conn, "ALTER TABLE categories AUTO_INCREMENT = 1", "Reset categories auto-increment", $log, $errors);
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 63)
+Match: run($conn, "ALTER TABLE subcategories AUTO_INCREMENT = 1", "Reset subcategories auto-increment", $log, $errors);
+----------------------------------------
+Context:
+run($conn, "DELETE FROM products", "Cleared old products", $log, $errors);
+run($conn, "DELETE FROM categories", "Cleared old categories", $log, $errors);
+run($conn, "ALTER TABLE categories AUTO_INCREMENT = 1", "Reset categories auto-increment", $log, $errors);
+run($conn, "ALTER TABLE subcategories AUTO_INCREMENT = 1", "Reset subcategories auto-increment", $log, $errors);
+run($conn, "ALTER TABLE products AUTO_INCREMENT = 1", "Reset products auto-increment", $log, $errors);
+run($conn, "SET FOREIGN_KEY_CHECKS=1", "Re-enabled FK checks", $log, $errors);
+
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 80)
+Match: // ── 8. Seed Equine Subcategories ─────────────────────────────────────
+----------------------------------------
+Context:
+    run($conn, "INSERT INTO categories (id, name, slug, icon, order_num) VALUES ($id, '$name', '$slug', '$icon', $order)", "Seeded category: $name", $log, $errors);
+}
+
+// ── 8. Seed Equine Subcategories ─────────────────────────────────────
+$subcategories = [
+    // Veterinary Treatments (cat 1)
+    [1, 'Antibiotics',                  'antibiotics',                 '💊', 1],
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 81)
+Match: $subcategories = [
+----------------------------------------
+Context:
+}
+
+// ── 8. Seed Equine Subcategories ─────────────────────────────────────
+$subcategories = [
+    // Veterinary Treatments (cat 1)
+    [1, 'Antibiotics',                  'antibiotics',                 '💊', 1],
+    [1, 'Painkillers',                  'painkillers',                 '💉', 2],
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 107)
+Match: foreach ($subcategories as [$catId, $name, $slug, $icon, $order]) {
+----------------------------------------
+Context:
+    [4, 'Training Equipment',           'training-equipment',          '🎯', 2],
+    [4, 'Stable Supplies',              'stable-supplies',             '🏠', 3],
+];
+foreach ($subcategories as [$catId, $name, $slug, $icon, $order]) {
+    $nameSafe = $conn->real_escape_string($name);
+    run($conn, "INSERT INTO subcategories (category_id, name, slug, icon, order_num) VALUES ($catId, '$nameSafe', '$slug', '$icon', $order)", "Seeded subcategory: $name", $log, $errors);
+}
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 109)
+Match: run($conn, "INSERT INTO subcategories (category_id, name, slug, icon, order_num) VALUES ($catId, '$nameSafe', '$slug', '$icon', $order)", "Seeded subcategory: $name", $log, $errors);
+----------------------------------------
+Context:
+];
+foreach ($subcategories as [$catId, $name, $slug, $icon, $order]) {
+    $nameSafe = $conn->real_escape_string($name);
+    run($conn, "INSERT INTO subcategories (category_id, name, slug, icon, order_num) VALUES ($catId, '$nameSafe', '$slug', '$icon', $order)", "Seeded subcategory: $name", $log, $errors);
+}
+
+// ── 9. Seed Sample Equine Products ──────────────────────────────────
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 113)
+Match: // Get subcategory IDs
+----------------------------------------
+Context:
+}
+
+// ── 9. Seed Sample Equine Products ──────────────────────────────────
+// Get subcategory IDs
+$subIds = [];
+$res = $conn->query("SELECT id, slug FROM subcategories");
+while ($r = $res->fetch_assoc()) $subIds[$r['slug']] = $r['id'];
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 115)
+Match: $res = $conn->query("SELECT id, slug FROM subcategories");
+----------------------------------------
+Context:
+// ── 9. Seed Sample Equine Products ──────────────────────────────────
+// Get subcategory IDs
+$subIds = [];
+$res = $conn->query("SELECT id, slug FROM subcategories");
+while ($r = $res->fetch_assoc()) $subIds[$r['slug']] = $r['id'];
+
+$products = [
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 143)
+Match: foreach ($products as [$catId, $subcatId, $name, $slug, $desc, $price, $oldPrice, $img, $badge, $stock, $featured, $lto]) {
+----------------------------------------
+Context:
+    [6, null,                                   'Racehorse Performance Pellets',    'racehorse-performance-pellets',    'High-energy performance feed for racehorses and sport horses. 30kg bag.',             48.00, 55.00, 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=600&q=80', 'HOT',  60, 1, 1],
+];
+
+foreach ($products as [$catId, $subcatId, $name, $slug, $desc, $price, $oldPrice, $img, $badge, $stock, $featured, $lto]) {
+    $nameSafe = $conn->real_escape_string($name);
+    $slugSafe = $conn->real_escape_string($slug);
+    $descSafe = $conn->real_escape_string($desc);
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 149)
+Match: $subcatVal = $subcatId ? $subcatId : 'NULL';
+----------------------------------------
+Context:
+    $descSafe = $conn->real_escape_string($desc);
+    $imgSafe  = $conn->real_escape_string($img);
+    $badgeSafe = $conn->real_escape_string($badge);
+    $subcatVal = $subcatId ? $subcatId : 'NULL';
+    $oldPriceVal = $oldPrice ? $oldPrice : 'NULL';
+    run($conn, "INSERT INTO products (category_id, subcategory_id, name, slug, description, price, old_price, image_url, badge, stock, featured, limited_time_offer) VALUES ($catId, $subcatVal, '$nameSafe', '$slugSafe', '$descSafe', $price, $oldPriceVal, '$imgSafe', '$badgeSafe', $stock, $featured, $lto)", "Seeded product: $name", $log, $errors);
+}
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\admin\run_migration.php (Line 151)
+Match: run($conn, "INSERT INTO products (category_id, subcategory_id, name, slug, description, price, old_price, image_url, badge, stock, featured, limited_time_offer) VALUES ($catId, $subcatVal, '$nameSafe', '$slugSafe', '$descSafe', $price, $oldPriceVal, '$imgSafe', '$badgeSafe', $stock, $featured, $lto)", "Seeded product: $name", $log, $errors);
+----------------------------------------
+Context:
+    $badgeSafe = $conn->real_escape_string($badge);
+    $subcatVal = $subcatId ? $subcatId : 'NULL';
+    $oldPriceVal = $oldPrice ? $oldPrice : 'NULL';
+    run($conn, "INSERT INTO products (category_id, subcategory_id, name, slug, description, price, old_price, image_url, badge, stock, featured, limited_time_offer) VALUES ($catId, $subcatVal, '$nameSafe', '$slugSafe', '$descSafe', $price, $oldPriceVal, '$imgSafe', '$badgeSafe', $stock, $featured, $lto)", "Seeded product: $name", $log, $errors);
+}
+?>
+<!DOCTYPE html>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\functions.php (Line 140)
+Match: function getSubcategories(int $categoryId): array {
+----------------------------------------
+Context:
+    return $cats;
+}
+
+function getSubcategories(int $categoryId): array {
+    global $conn;
+    $res = $conn->query("
+        SELECT s.*, 
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\functions.php (Line 144)
+Match: (SELECT COUNT(*) FROM products p WHERE p.subcategory_id=s.id) AS product_count
+----------------------------------------
+Context:
+    global $conn;
+    $res = $conn->query("
+        SELECT s.*, 
+               (SELECT COUNT(*) FROM products p WHERE p.subcategory_id=s.id) AS product_count 
+        FROM subcategories s 
+        WHERE s.category_id=$categoryId 
+        ORDER BY s.order_num ASC, s.id ASC
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\functions.php (Line 145)
+Match: FROM subcategories s
+----------------------------------------
+Context:
+    $res = $conn->query("
+        SELECT s.*, 
+               (SELECT COUNT(*) FROM products p WHERE p.subcategory_id=s.id) AS product_count 
+        FROM subcategories s 
+        WHERE s.category_id=$categoryId 
+        ORDER BY s.order_num ASC, s.id ASC
+    ");
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\functions.php (Line 154)
+Match: function getAllSubcategories(): array {
+----------------------------------------
+Context:
+    return $subs;
+}
+
+function getAllSubcategories(): array {
+    global $conn;
+    $res = $conn->query("
+        SELECT s.*, c.name AS cat_name,
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\functions.php (Line 158)
+Match: (SELECT COUNT(*) FROM products p WHERE p.subcategory_id=s.id) AS product_count
+----------------------------------------
+Context:
+    global $conn;
+    $res = $conn->query("
+        SELECT s.*, c.name AS cat_name,
+               (SELECT COUNT(*) FROM products p WHERE p.subcategory_id=s.id) AS product_count
+        FROM subcategories s
+        JOIN categories c ON c.id = s.category_id
+        ORDER BY c.order_num ASC, s.order_num ASC
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\functions.php (Line 159)
+Match: FROM subcategories s
+----------------------------------------
+Context:
+    $res = $conn->query("
+        SELECT s.*, c.name AS cat_name,
+               (SELECT COUNT(*) FROM products p WHERE p.subcategory_id=s.id) AS product_count
+        FROM subcategories s
+        JOIN categories c ON c.id = s.category_id
+        ORDER BY c.order_num ASC, s.order_num ASC
+    ");
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 111)
+Match: $subcategories = [];
+----------------------------------------
+Context:
+        <div class="menu-section-label">Categories</div>
+
+        <?php foreach ($categories as $cat): 
+            $subcategories = [];
+            if (isset($conn) && $conn) {
+                $subcat_res = $conn->query("SELECT name, slug FROM subcategories WHERE category_id = " . intval($cat['id']) . " ORDER BY order_num ASC");
+                if ($subcat_res) {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 113)
+Match: $subcat_res = $conn->query("SELECT name, slug FROM subcategories WHERE category_id = " . intval($cat['id']) . " ORDER BY order_num ASC");
+----------------------------------------
+Context:
+        <?php foreach ($categories as $cat): 
+            $subcategories = [];
+            if (isset($conn) && $conn) {
+                $subcat_res = $conn->query("SELECT name, slug FROM subcategories WHERE category_id = " . intval($cat['id']) . " ORDER BY order_num ASC");
+                if ($subcat_res) {
+                    while ($s_row = $subcat_res->fetch_assoc()) {
+                        $subcategories[] = $s_row;
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 114)
+Match: if ($subcat_res) {
+----------------------------------------
+Context:
+            $subcategories = [];
+            if (isset($conn) && $conn) {
+                $subcat_res = $conn->query("SELECT name, slug FROM subcategories WHERE category_id = " . intval($cat['id']) . " ORDER BY order_num ASC");
+                if ($subcat_res) {
+                    while ($s_row = $subcat_res->fetch_assoc()) {
+                        $subcategories[] = $s_row;
+                    }
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 115)
+Match: while ($s_row = $subcat_res->fetch_assoc()) {
+----------------------------------------
+Context:
+            if (isset($conn) && $conn) {
+                $subcat_res = $conn->query("SELECT name, slug FROM subcategories WHERE category_id = " . intval($cat['id']) . " ORDER BY order_num ASC");
+                if ($subcat_res) {
+                    while ($s_row = $subcat_res->fetch_assoc()) {
+                        $subcategories[] = $s_row;
+                    }
+                }
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 116)
+Match: $subcategories[] = $s_row;
+----------------------------------------
+Context:
+                $subcat_res = $conn->query("SELECT name, slug FROM subcategories WHERE category_id = " . intval($cat['id']) . " ORDER BY order_num ASC");
+                if ($subcat_res) {
+                    while ($s_row = $subcat_res->fetch_assoc()) {
+                        $subcategories[] = $s_row;
+                    }
+                }
+            }
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 120)
+Match: $has_subs = !empty($subcategories);
+----------------------------------------
+Context:
+                    }
+                }
+            }
+            $has_subs = !empty($subcategories);
+        ?>
+            <?php if ($has_subs): ?>
+                <div class="menu-item-parent <?= (($_GET['cat'] ?? '') === $cat['slug']) ? 'active open' : '' ?>" data-cat-id="<?= $cat['id'] ?>">
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 130)
+Match: <div class="menu-subcats <?= (($_GET['cat'] ?? '') === $cat['slug']) ? 'open' : '' ?>" id="subcats-<?= $cat['id'] ?>">
+----------------------------------------
+Context:
+                    </div>
+                    <div class="menu-chevron">▾</div>
+                </div>
+                <div class="menu-subcats <?= (($_GET['cat'] ?? '') === $cat['slug']) ? 'open' : '' ?>" id="subcats-<?= $cat['id'] ?>">
+                    <a href="/GadgetZone/pages/shop.php?cat=<?= $cat['slug'] ?>" class="menu-subcat-item <?= (($_GET['cat'] ?? '') === $cat['slug'] && empty($_GET['subcat'])) ? 'active' : '' ?>">
+                        All <?= htmlspecialchars($cat['name']) ?>
+                    </a>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 131)
+Match: <a href="/GadgetZone/pages/shop.php?cat=<?= $cat['slug'] ?>" class="menu-subcat-item <?= (($_GET['cat'] ?? '') === $cat['slug'] && empty($_GET['subcat'])) ? 'active' : '' ?>">
+----------------------------------------
+Context:
+                    <div class="menu-chevron">▾</div>
+                </div>
+                <div class="menu-subcats <?= (($_GET['cat'] ?? '') === $cat['slug']) ? 'open' : '' ?>" id="subcats-<?= $cat['id'] ?>">
+                    <a href="/GadgetZone/pages/shop.php?cat=<?= $cat['slug'] ?>" class="menu-subcat-item <?= (($_GET['cat'] ?? '') === $cat['slug'] && empty($_GET['subcat'])) ? 'active' : '' ?>">
+                        All <?= htmlspecialchars($cat['name']) ?>
+                    </a>
+                    <?php foreach ($subcategories as $sub): ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 134)
+Match: <?php foreach ($subcategories as $sub): ?>
+----------------------------------------
+Context:
+                    <a href="/GadgetZone/pages/shop.php?cat=<?= $cat['slug'] ?>" class="menu-subcat-item <?= (($_GET['cat'] ?? '') === $cat['slug'] && empty($_GET['subcat'])) ? 'active' : '' ?>">
+                        All <?= htmlspecialchars($cat['name']) ?>
+                    </a>
+                    <?php foreach ($subcategories as $sub): ?>
+                    <a href="/GadgetZone/pages/shop.php?cat=<?= $cat['slug'] ?>&subcat=<?= $sub['slug'] ?>" class="menu-subcat-item <?= (($_GET['subcat'] ?? '') === $sub['slug']) ? 'active' : '' ?>">
+                        <?= htmlspecialchars($sub['name']) ?>
+                    </a>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\includes\header.php (Line 135)
+Match: <a href="/GadgetZone/pages/shop.php?cat=<?= $cat['slug'] ?>&subcat=<?= $sub['slug'] ?>" class="menu-subcat-item <?= (($_GET['subcat'] ?? '') === $sub['slug']) ? 'active' : '' ?>">
+----------------------------------------
+Context:
+                        All <?= htmlspecialchars($cat['name']) ?>
+                    </a>
+                    <?php foreach ($subcategories as $sub): ?>
+                    <a href="/GadgetZone/pages/shop.php?cat=<?= $cat['slug'] ?>&subcat=<?= $sub['slug'] ?>" class="menu-subcat-item <?= (($_GET['subcat'] ?? '') === $sub['slug']) ? 'active' : '' ?>">
+                        <?= htmlspecialchars($sub['name']) ?>
+                    </a>
+                    <?php endforeach; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 8)
+Match: $subcat   = trim($_GET['subcat']   ?? '');
+----------------------------------------
+Context:
+// Filters
+$search   = trim($_GET['search']   ?? '');
+$cat      = trim($_GET['cat']      ?? '');
+$subcat   = trim($_GET['subcat']   ?? '');
+$sort     = $_GET['sort']          ?? 'newest';
+$badge    = $_GET['badge']         ?? '';
+$maxPrice = isset($_GET['max_price']) ? (float)$_GET['max_price'] : 9999;
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 24)
+Match: if ($subcat) {
+----------------------------------------
+Context:
+    $c = $conn->real_escape_string($cat);
+    $where[] = "c.slug='$c'";
+}
+if ($subcat) {
+    // subcat can be slug or id
+    $sc = $conn->real_escape_string($subcat);
+    $where[] = "(s.slug='$sc' OR s.id='$sc')";
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 25)
+Match: // subcat can be slug or id
+----------------------------------------
+Context:
+    $where[] = "c.slug='$c'";
+}
+if ($subcat) {
+    // subcat can be slug or id
+    $sc = $conn->real_escape_string($subcat);
+    $where[] = "(s.slug='$sc' OR s.id='$sc')";
+}
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 26)
+Match: $sc = $conn->real_escape_string($subcat);
+----------------------------------------
+Context:
+}
+if ($subcat) {
+    // subcat can be slug or id
+    $sc = $conn->real_escape_string($subcat);
+    $where[] = "(s.slug='$sc' OR s.id='$sc')";
+}
+if ($badge) {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 46)
+Match: $joinSubcat = "LEFT JOIN subcategories s ON s.id=p.subcategory_id";
+----------------------------------------
+Context:
+    default      => 'p.created_at DESC',
+};
+
+$joinSubcat = "LEFT JOIN subcategories s ON s.id=p.subcategory_id";
+
+// Count total
+$total      = (int)$conn->query("SELECT COUNT(*) FROM products p JOIN categories c ON c.id=p.category_id $joinSubcat WHERE $whereStr")->fetch_row()[0];
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 49)
+Match: $total      = (int)$conn->query("SELECT COUNT(*) FROM products p JOIN categories c ON c.id=p.category_id $joinSubcat WHERE $whereStr")->fetch_row()[0];
+----------------------------------------
+Context:
+$joinSubcat = "LEFT JOIN subcategories s ON s.id=p.subcategory_id";
+
+// Count total
+$total      = (int)$conn->query("SELECT COUNT(*) FROM products p JOIN categories c ON c.id=p.category_id $joinSubcat WHERE $whereStr")->fetch_row()[0];
+$totalPages = (int)ceil($total / $perPage);
+$offset     = ($page - 1) * $perPage;
+
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 54)
+Match: s.name AS subcat_name
+----------------------------------------
+Context:
+$offset     = ($page - 1) * $perPage;
+
+$products = $conn->query("SELECT p.*, c.name AS cat_name, c.slug AS cat_slug,
+    s.name AS subcat_name
+    FROM products p
+    JOIN categories c ON c.id=p.category_id
+    $joinSubcat
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 57)
+Match: $joinSubcat
+----------------------------------------
+Context:
+    s.name AS subcat_name
+    FROM products p
+    JOIN categories c ON c.id=p.category_id
+    $joinSubcat
+    WHERE $whereStr ORDER BY $orderBy LIMIT $perPage OFFSET $offset");
+
+// Category list with counts for sidebar
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 63)
+Match: // If a category is selected, fetch its subcategories
+----------------------------------------
+Context:
+// Category list with counts for sidebar
+$allCats = $conn->query("SELECT c.*, COUNT(p.id) AS cnt FROM categories c LEFT JOIN products p ON p.category_id=c.id GROUP BY c.id ORDER BY c.order_num ASC");
+
+// If a category is selected, fetch its subcategories
+$selectedCatObj = null;
+$subcatList = [];
+if ($cat) {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 65)
+Match: $subcatList = [];
+----------------------------------------
+Context:
+
+// If a category is selected, fetch its subcategories
+$selectedCatObj = null;
+$subcatList = [];
+if ($cat) {
+    $selectedCatObj = $conn->query("SELECT * FROM categories WHERE slug='".$conn->real_escape_string($cat)."'")->fetch_assoc();
+    if ($selectedCatObj) {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 69)
+Match: $subcatList = getSubcategories($selectedCatObj['id']);
+----------------------------------------
+Context:
+if ($cat) {
+    $selectedCatObj = $conn->query("SELECT * FROM categories WHERE slug='".$conn->real_escape_string($cat)."'")->fetch_assoc();
+    if ($selectedCatObj) {
+        $subcatList = getSubcategories($selectedCatObj['id']);
+    }
+}
+$currentCat = $selectedCatObj['name'] ?? '';
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 82)
+Match: <?php if ($subcat && !empty($subcatList)): ?>
+----------------------------------------
+Context:
+        <a href="/GadgetZone/index.php">Home</a> <span>›</span>
+        <a href="/GadgetZone/pages/shop.php">Shop</a>
+        <?php if ($currentCat): ?><span>›</span> <?= htmlspecialchars($currentCat) ?><?php endif; ?>
+        <?php if ($subcat && !empty($subcatList)): ?>
+            <?php foreach ($subcatList as $sc): if ($sc['slug'] == $subcat || $sc['id'] == $subcat): ?>
+                <span>›</span> <?= htmlspecialchars($sc['name']) ?>
+            <?php endif; endforeach; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 83)
+Match: <?php foreach ($subcatList as $sc): if ($sc['slug'] == $subcat || $sc['id'] == $subcat): ?>
+----------------------------------------
+Context:
+        <a href="/GadgetZone/pages/shop.php">Shop</a>
+        <?php if ($currentCat): ?><span>›</span> <?= htmlspecialchars($currentCat) ?><?php endif; ?>
+        <?php if ($subcat && !empty($subcatList)): ?>
+            <?php foreach ($subcatList as $sc): if ($sc['slug'] == $subcat || $sc['id'] == $subcat): ?>
+                <span>›</span> <?= htmlspecialchars($sc['name']) ?>
+            <?php endif; endforeach; ?>
+        <?php endif; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 106)
+Match: <input type="radio" name="cat" id="cat_all" value="" <?= !$cat ? 'checked' : '' ?> onchange="clearSubcatAndSubmit(this)">
+----------------------------------------
+Context:
+                <!-- ── CATEGORIES ── -->
+                <div class="sidebar-title">📂 Categories</div>
+                <div class="filter-option">
+                    <input type="radio" name="cat" id="cat_all" value="" <?= !$cat ? 'checked' : '' ?> onchange="clearSubcatAndSubmit(this)">
+                    <label for="cat_all">All Categories</label>
+                    <span class="filter-count"><?= $total ?></span>
+                </div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 113)
+Match: $subs = getSubcategories($c2['id']);
+----------------------------------------
+Context:
+                <?php 
+                $allCats->data_seek(0); 
+                while ($c2 = $allCats->fetch_assoc()): 
+                    $subs = getSubcategories($c2['id']);
+                    $isCurrentOrChildActive = ($cat === $c2['slug']);
+                    if (!$isCurrentOrChildActive && $subcat && !empty($subs)) {
+                        foreach ($subs as $sc) {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 115)
+Match: if (!$isCurrentOrChildActive && $subcat && !empty($subs)) {
+----------------------------------------
+Context:
+                while ($c2 = $allCats->fetch_assoc()): 
+                    $subs = getSubcategories($c2['id']);
+                    $isCurrentOrChildActive = ($cat === $c2['slug']);
+                    if (!$isCurrentOrChildActive && $subcat && !empty($subs)) {
+                        foreach ($subs as $sc) {
+                            if ($sc['slug'] === $subcat) {
+                                $isCurrentOrChildActive = true;
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 117)
+Match: if ($sc['slug'] === $subcat) {
+----------------------------------------
+Context:
+                    $isCurrentOrChildActive = ($cat === $c2['slug']);
+                    if (!$isCurrentOrChildActive && $subcat && !empty($subs)) {
+                        foreach ($subs as $sc) {
+                            if ($sc['slug'] === $subcat) {
+                                $isCurrentOrChildActive = true;
+                                break;
+                            }
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 130)
+Match: onchange="clearSubcatAndSubmit(this)">
+----------------------------------------
+Context:
+                            <input type="radio" name="cat" id="cat_<?= $c2['slug'] ?>"
+                                   value="<?= $c2['slug'] ?>"
+                                   <?= $cat === $c2['slug'] ? 'checked' : '' ?>
+                                   onchange="clearSubcatAndSubmit(this)">
+                            <label for="cat_<?= $c2['slug'] ?>"><?= $c2['icon'] ?> <?= htmlspecialchars($c2['name']) ?></label>
+                            <span class="filter-count"><?= $c2['cnt'] ?></span>
+                        </div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 135)
+Match: <button type="button" class="subcat-toggle-btn" id="toggle_btn_<?= $c2['id'] ?>" onclick="toggleSubcat(this, 'subcat_list_<?= $c2['id'] ?>')">
+----------------------------------------
+Context:
+                            <span class="filter-count"><?= $c2['cnt'] ?></span>
+                        </div>
+                        <?php if (!empty($subs)): ?>
+                        <button type="button" class="subcat-toggle-btn" id="toggle_btn_<?= $c2['id'] ?>" onclick="toggleSubcat(this, 'subcat_list_<?= $c2['id'] ?>')">
+                            <?= $isCurrentOrChildActive ? '−' : '＋' ?>
+                        </button>
+                        <?php endif; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 142)
+Match: <div class="subcat-list <?= $isCurrentOrChildActive ? 'open' : '' ?>" id="subcat_list_<?= $c2['id'] ?>">
+----------------------------------------
+Context:
+                    </div>
+
+                    <?php if (!empty($subs)): ?>
+                    <div class="subcat-list <?= $isCurrentOrChildActive ? 'open' : '' ?>" id="subcat_list_<?= $c2['id'] ?>">
+                        <div class="filter-option subcat-option">
+                            <input type="radio" name="subcat" id="subcat_all_<?= $c2['id'] ?>" value=""
+                                   <?= ($cat === $c2['slug'] && !$subcat) ? 'checked' : '' ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 143)
+Match: <div class="filter-option subcat-option">
+----------------------------------------
+Context:
+
+                    <?php if (!empty($subs)): ?>
+                    <div class="subcat-list <?= $isCurrentOrChildActive ? 'open' : '' ?>" id="subcat_list_<?= $c2['id'] ?>">
+                        <div class="filter-option subcat-option">
+                            <input type="radio" name="subcat" id="subcat_all_<?= $c2['id'] ?>" value=""
+                                   <?= ($cat === $c2['slug'] && !$subcat) ? 'checked' : '' ?>
+                                   onchange="selectCatAndSubmit(this, '<?= $c2['slug'] ?>')">
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 144)
+Match: <input type="radio" name="subcat" id="subcat_all_<?= $c2['id'] ?>" value=""
+----------------------------------------
+Context:
+                    <?php if (!empty($subs)): ?>
+                    <div class="subcat-list <?= $isCurrentOrChildActive ? 'open' : '' ?>" id="subcat_list_<?= $c2['id'] ?>">
+                        <div class="filter-option subcat-option">
+                            <input type="radio" name="subcat" id="subcat_all_<?= $c2['id'] ?>" value=""
+                                   <?= ($cat === $c2['slug'] && !$subcat) ? 'checked' : '' ?>
+                                   onchange="selectCatAndSubmit(this, '<?= $c2['slug'] ?>')">
+                            <label for="subcat_all_<?= $c2['id'] ?>" style="font-style:italic">All in <?= htmlspecialchars($c2['name']) ?></label>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 145)
+Match: <?= ($cat === $c2['slug'] && !$subcat) ? 'checked' : '' ?>
+----------------------------------------
+Context:
+                    <div class="subcat-list <?= $isCurrentOrChildActive ? 'open' : '' ?>" id="subcat_list_<?= $c2['id'] ?>">
+                        <div class="filter-option subcat-option">
+                            <input type="radio" name="subcat" id="subcat_all_<?= $c2['id'] ?>" value=""
+                                   <?= ($cat === $c2['slug'] && !$subcat) ? 'checked' : '' ?>
+                                   onchange="selectCatAndSubmit(this, '<?= $c2['slug'] ?>')">
+                            <label for="subcat_all_<?= $c2['id'] ?>" style="font-style:italic">All in <?= htmlspecialchars($c2['name']) ?></label>
+                        </div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 147)
+Match: <label for="subcat_all_<?= $c2['id'] ?>" style="font-style:italic">All in <?= htmlspecialchars($c2['name']) ?></label>
+----------------------------------------
+Context:
+                            <input type="radio" name="subcat" id="subcat_all_<?= $c2['id'] ?>" value=""
+                                   <?= ($cat === $c2['slug'] && !$subcat) ? 'checked' : '' ?>
+                                   onchange="selectCatAndSubmit(this, '<?= $c2['slug'] ?>')">
+                            <label for="subcat_all_<?= $c2['id'] ?>" style="font-style:italic">All in <?= htmlspecialchars($c2['name']) ?></label>
+                        </div>
+                        <?php foreach ($subs as $sc): ?>
+                        <div class="filter-option subcat-option">
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 150)
+Match: <div class="filter-option subcat-option">
+----------------------------------------
+Context:
+                            <label for="subcat_all_<?= $c2['id'] ?>" style="font-style:italic">All in <?= htmlspecialchars($c2['name']) ?></label>
+                        </div>
+                        <?php foreach ($subs as $sc): ?>
+                        <div class="filter-option subcat-option">
+                            <input type="radio" name="subcat" id="subcat_<?= $sc['slug'] ?>"
+                                   value="<?= $sc['slug'] ?>"
+                                   <?= $subcat === $sc['slug'] ? 'checked' : '' ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 151)
+Match: <input type="radio" name="subcat" id="subcat_<?= $sc['slug'] ?>"
+----------------------------------------
+Context:
+                        </div>
+                        <?php foreach ($subs as $sc): ?>
+                        <div class="filter-option subcat-option">
+                            <input type="radio" name="subcat" id="subcat_<?= $sc['slug'] ?>"
+                                   value="<?= $sc['slug'] ?>"
+                                   <?= $subcat === $sc['slug'] ? 'checked' : '' ?>
+                                   onchange="selectCatAndSubmit(this, '<?= $c2['slug'] ?>')">
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 153)
+Match: <?= $subcat === $sc['slug'] ? 'checked' : '' ?>
+----------------------------------------
+Context:
+                        <div class="filter-option subcat-option">
+                            <input type="radio" name="subcat" id="subcat_<?= $sc['slug'] ?>"
+                                   value="<?= $sc['slug'] ?>"
+                                   <?= $subcat === $sc['slug'] ? 'checked' : '' ?>
+                                   onchange="selectCatAndSubmit(this, '<?= $c2['slug'] ?>')">
+                            <label for="subcat_<?= $sc['slug'] ?>"><?= $sc['icon'] ?> <?= htmlspecialchars($sc['name']) ?></label>
+                            <span class="filter-count"><?= $sc['product_count'] ?></span>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 155)
+Match: <label for="subcat_<?= $sc['slug'] ?>"><?= $sc['icon'] ?> <?= htmlspecialchars($sc['name']) ?></label>
+----------------------------------------
+Context:
+                                   value="<?= $sc['slug'] ?>"
+                                   <?= $subcat === $sc['slug'] ? 'checked' : '' ?>
+                                   onchange="selectCatAndSubmit(this, '<?= $c2['slug'] ?>')">
+                            <label for="subcat_<?= $sc['slug'] ?>"><?= $sc['icon'] ?> <?= htmlspecialchars($sc['name']) ?></label>
+                            <span class="filter-count"><?= $sc['product_count'] ?></span>
+                        </div>
+                        <?php endforeach; ?>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 229)
+Match: <?php if ($p['subcat_name']): ?> · <?= htmlspecialchars($p['subcat_name']) ?><?php endif; ?>
+----------------------------------------
+Context:
+                    <div class="product-card-body">
+                        <div class="product-cat">
+                            <?= htmlspecialchars($p['cat_name']) ?>
+                            <?php if ($p['subcat_name']): ?> · <?= htmlspecialchars($p['subcat_name']) ?><?php endif; ?>
+                        </div>
+                        <a href="/GadgetZone/pages/product.php?slug=<?= $p['slug'] ?>">
+                            <div class="product-name"><?= htmlspecialchars($p['name']) ?></div>
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 279)
+Match: function toggleSubcat(btn, listId) {
+----------------------------------------
+Context:
+}
+
+// Collapsible categories sidebar functions
+function toggleSubcat(btn, listId) {
+    const list = document.getElementById(listId);
+    if (!list) return;
+    const isOpen = list.classList.toggle('open');
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 286)
+Match: function selectCatAndSubmit(subcatRadio, catSlug) {
+----------------------------------------
+Context:
+    btn.textContent = isOpen ? '−' : '＋';
+}
+
+function selectCatAndSubmit(subcatRadio, catSlug) {
+    const catRadio = document.querySelector(`input[name="cat"][value="${catSlug}"]`);
+    if (catRadio) {
+        catRadio.checked = true;
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 291)
+Match: subcatRadio.form.submit();
+----------------------------------------
+Context:
+    if (catRadio) {
+        catRadio.checked = true;
+    }
+    subcatRadio.form.submit();
+}
+
+function clearSubcatAndSubmit(catRadio) {
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 294)
+Match: function clearSubcatAndSubmit(catRadio) {
+----------------------------------------
+Context:
+    subcatRadio.form.submit();
+}
+
+function clearSubcatAndSubmit(catRadio) {
+    const subcatRadios = catRadio.form.querySelectorAll('input[name="subcat"]');
+    subcatRadios.forEach(r => r.checked = false);
+    catRadio.form.submit();
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 295)
+Match: const subcatRadios = catRadio.form.querySelectorAll('input[name="subcat"]');
+----------------------------------------
+Context:
+}
+
+function clearSubcatAndSubmit(catRadio) {
+    const subcatRadios = catRadio.form.querySelectorAll('input[name="subcat"]');
+    subcatRadios.forEach(r => r.checked = false);
+    catRadio.form.submit();
+}
+================================================================================
+
+================================================================================
+File: D:\xampp\htdocs\GadgetZone\pages\shop.php (Line 296)
+Match: subcatRadios.forEach(r => r.checked = false);
+----------------------------------------
+Context:
+
+function clearSubcatAndSubmit(catRadio) {
+    const subcatRadios = catRadio.form.querySelectorAll('input[name="subcat"]');
+    subcatRadios.forEach(r => r.checked = false);
+    catRadio.form.submit();
+}
+</script>
+================================================================================
+
