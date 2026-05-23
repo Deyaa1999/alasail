@@ -1689,7 +1689,7 @@ body.mobile-menu-open {
 .slider-wrapper-outer {
     position: relative;
     width: 100%;
-    padding: 0; /* Spans full container width elegantly now that arrows are removed */
+    padding: 0 46px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -1905,7 +1905,7 @@ body.mobile-menu-open {
 /* Responsive Overrides */
 @media (max-width: 768px) {
     .slider-wrapper-outer {
-        padding: 0; /* Spans full mobile screen width now that arrows are removed */
+        padding: 0 38px;
     }
     
     .slider-arrow {

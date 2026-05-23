@@ -109,6 +109,9 @@ if (!$deal_product && !empty($featured_products)) {
         
         <!-- Slider Outer Wrapper -->
         <div class="slider-wrapper-outer">
+            <button class="slider-arrow prev-arrow" id="sliderPrevBtn" aria-label="Previous">
+                <span class="arrow-icon">&#8250;</span>
+            </button>
             <div class="slider-container" id="categorySlider">
                 <div class="slider-track" id="sliderTrack">
                     <?php 
@@ -190,8 +193,11 @@ if (!$deal_product && !empty($featured_products)) {
                     <?php endforeach; ?>
                 </div>
             </div>
+            <button class="slider-arrow next-arrow" id="sliderNextBtn" aria-label="Next">
+                <span class="arrow-icon">&#8249;</span>
+            </button>
         </div>
-        
+
         <!-- Bottom Controls -->
         <div class="slider-controls-bottom">
             <!-- Gold Animated Progress Bar -->
