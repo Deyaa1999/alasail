@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isTransitioning = false;
 
     function getItemsVisible() {
-        return window.innerWidth > 768 ? 8 : 5;
+        return window.innerWidth > 768 ? 7 : 4;
     }
 
     function updatePosition(animate = true) {
@@ -521,17 +521,33 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.add('active');
     });
 
-    // 6. Auto-scroll Disabled (Manual Sliding Only)
+    // 6. Autoplay — advances one step every 3s, pauses on user interaction
+    let autoplayTimer = null;
+    const AUTOPLAY_DELAY = 3000;
+    const RESUME_DELAY  = 5000;
+    let resumeTimer = null;
+
     function startTimer() {
-        // Autoplay disabled - slider moves manually only
+        stopTimer();
+        autoplayTimer = setInterval(() => {
+            const visibleCount = getItemsVisible();
+            const maxIndex = N - visibleCount;
+            if (maxIndex <= 0) return;
+            currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+            isTransitioning = true;
+            updatePosition();
+        }, AUTOPLAY_DELAY);
     }
 
     function stopTimer() {
-        // Autoplay disabled - slider moves manually only
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
     }
 
     function handleUserInteraction() {
-        // Autoplay disabled - slider moves manually only
+        stopTimer();
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(startTimer, RESUME_DELAY);
     }
 
     // 7. Drag and Swipe Gesture Support (Touch on Mobile, Mouse Drag on Desktop)
