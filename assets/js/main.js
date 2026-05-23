@@ -586,25 +586,28 @@ document.addEventListener('DOMContentLoaded', () => {
         currentX = getEventX(e);
         diffX = currentX - startX;
 
-        // Determine drag axis on first significant move (touch only)
-        if (isHorizontalDrag === null && e.touches) {
-            const dy = e.touches[0].clientY - startY;
+        if (e.touches) {
+            const dy = Math.abs(e.touches[0].clientY - startY);
             const dx = Math.abs(diffX);
-            if (dx > 5 || Math.abs(dy) > 5) {
-                isHorizontalDrag = dx >= Math.abs(dy);
+
+            // Decide axis quickly at 3px to outrun the browser's scroll decision
+            if (isHorizontalDrag === null) {
+                if (dx > 3 || dy > 3) {
+                    isHorizontalDrag = dx >= dy;
+                }
             }
-        }
 
-        // Let vertical scrolling through — abort drag
-        if (isHorizontalDrag === false) {
-            isDragging = false;
-            updatePosition();
-            return;
-        }
+            // Confirmed vertical — hand back to native scroll
+            if (isHorizontalDrag === false) {
+                isDragging = false;
+                updatePosition();
+                return;
+            }
 
-        // Block page scroll during a confirmed horizontal swipe
-        if (isHorizontalDrag && e.cancelable) {
-            e.preventDefault();
+            // Prevent scroll for confirmed horizontal OR undecided-with-x-movement
+            if (isHorizontalDrag === true || dx > 0) {
+                if (e.cancelable) e.preventDefault();
+            }
         }
 
         // Give real-time visual drag feedback
@@ -638,8 +641,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const visibleCount = getItemsVisible();
         const maxIndex = N - visibleCount;
         
-        // If dragged more than 50px, switch index
-        if (Math.abs(diffX) > 50) {
+        // Snap if dragged > 10% of container width (min 30px)
+        const snapThreshold = Math.max(30, slider.offsetWidth * 0.10);
+        if (Math.abs(diffX) > snapThreshold) {
             if (diffX > 0) {
                 // Dragged right (swiping right -> show previous item)
                 currentIndex--;
@@ -661,8 +665,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Touch Event Listeners for Mobile
     slider.addEventListener('touchstart', dragStart, { passive: true });
-    slider.addEventListener('touchmove', dragMove, { passive: false }); // must be non-passive to preventDefault horizontal scroll
+    slider.addEventListener('touchmove', dragMove, { passive: false });
     slider.addEventListener('touchend', dragEnd);
+    slider.addEventListener('touchcancel', dragEnd);
 
     // Mouse Event Listeners for Desktop Dragging
     slider.addEventListener('mousedown', dragStart);
