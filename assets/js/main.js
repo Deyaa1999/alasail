@@ -389,6 +389,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const percent = -1 * (currentIndex * (100 / visibleCount));
         track.style.transform = `translateX(${percent}%)`;
         updateDots();
+        updateProgressBar();
+    }
+
+    function updateProgressBar() {
+        const bar = document.getElementById('progressBarFill');
+        if (!bar) return;
+        const visibleCount = getItemsVisible();
+        const maxIndex = Math.max(1, N - visibleCount);
+        const progress = (currentIndex / maxIndex) * 100;
+        bar.style.width = progress + '%';
     }
 
     function rebuildDots() {
@@ -527,8 +537,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 7. Drag and Swipe Gesture Support (Touch on Mobile, Mouse Drag on Desktop)
     let isDragging = false;
     let startX = 0;
+    let startY = 0;
     let currentX = 0;
     let diffX = 0;
+    let isHorizontalDrag = null; // null=undecided, true=horizontal, false=vertical
     
     // Disable default image/link dragging to avoid conflicts
     track.querySelectorAll('a, img').forEach(el => {
@@ -544,8 +556,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isTransitioning) return;
         isDragging = true;
         startX = getEventX(e);
+        startY = e.touches ? e.touches[0].clientY : (e.clientY || 0);
+        diffX = 0;
+        isHorizontalDrag = null;
         handleUserInteraction(); // Pause autoplay timer
-        
+
         // Remove transitions during drag for real-time responsiveness
         track.style.transition = 'none';
     }
@@ -555,27 +570,48 @@ document.addEventListener('DOMContentLoaded', () => {
         currentX = getEventX(e);
         diffX = currentX - startX;
 
+        // Determine drag axis on first significant move (touch only)
+        if (isHorizontalDrag === null && e.touches) {
+            const dy = e.touches[0].clientY - startY;
+            const dx = Math.abs(diffX);
+            if (dx > 5 || Math.abs(dy) > 5) {
+                isHorizontalDrag = dx >= Math.abs(dy);
+            }
+        }
+
+        // Let vertical scrolling through — abort drag
+        if (isHorizontalDrag === false) {
+            isDragging = false;
+            updatePosition();
+            return;
+        }
+
+        // Block page scroll during a confirmed horizontal swipe
+        if (isHorizontalDrag && e.cancelable) {
+            e.preventDefault();
+        }
+
         // Give real-time visual drag feedback
         const visibleCount = getItemsVisible();
         const currentPercent = -1 * (currentIndex * (100 / visibleCount));
-        
-        // Convert pixel drag diff to track percentage translate
-        const trackWidth = track.offsetWidth;
-        const dragPercent = (diffX / trackWidth) * 100;
-        
+
+        // Use container width (not track width) for accurate pixel→percent mapping
+        const containerWidth = slider.offsetWidth;
+        const dragPercent = containerWidth > 0 ? (diffX / containerWidth) * 100 : 0;
+
         let targetPercent = currentPercent + dragPercent;
-        
-        // Clamp bounds to prevent empty spaces and clones
+
+        // Clamp bounds with rubber-band effect
         const maxIndex = N - visibleCount;
         const maxPercent = -1 * (maxIndex * (100 / visibleCount));
-        
+
         if (targetPercent > 0) {
-            targetPercent = targetPercent * 0.3; // rubber-band effect at start
+            targetPercent = targetPercent * 0.3; // rubber-band at start
         } else if (targetPercent < maxPercent) {
             const overflow = targetPercent - maxPercent;
-            targetPercent = maxPercent + overflow * 0.3; // rubber-band effect at end
+            targetPercent = maxPercent + overflow * 0.3; // rubber-band at end
         }
-        
+
         track.style.transform = `translateX(${targetPercent}%)`;
     }
 
@@ -609,7 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Touch Event Listeners for Mobile
     slider.addEventListener('touchstart', dragStart, { passive: true });
-    slider.addEventListener('touchmove', dragMove, { passive: true });
+    slider.addEventListener('touchmove', dragMove, { passive: false }); // must be non-passive to preventDefault horizontal scroll
     slider.addEventListener('touchend', dragEnd);
 
     // Mouse Event Listeners for Desktop Dragging
